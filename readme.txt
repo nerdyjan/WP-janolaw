@@ -1,31 +1,33 @@
 === Janolaw AGB Hosting ===
-Tags: legal documents, shop, imprint, disclaimer
+Tags: legal documents, shop, imprint, disclaimer, privacy
 Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 3.0
+Tested up to: 4.3
+Stable tag: 4.3
 
-This plugin get legal documents provided by Janolaw AG (commercial service) like AGB, Imprint etc. for Webshops and Pages. (German Service only)
+This plugin get legal documents provided by janolaw AG (commercial service) like AGB, Imprint etc. for Webshops and Pages. (German Service only)
 
 == Description ==
 
-This plugin get legal documents provided by Janolaw AG (commercial service) like AGB, Imprint etc. for Webshops and Pages.
-For more Informations visit: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
-The service only provide german documents!
+This plugin get legal documents provided by janolaw AG (commercial service) like terms of use, imprint etc. for webshops and pages.
+For more Informations visit: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/ and http://www.janolaw.de/agb-service/einbindung-wordpress.html#menu
+The service provide german, english and french documents!
 
 == Installation ==
 
 1. Upload the folder `janolaw_agb` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Enter your personal IDs provided by Janolaw AG at `Settings -> Janolaw AGB Service` (UserID / ShopID)
+3. Enter your personal IDs provided by janolaw AG at `Settings -> janolaw AGB Service` (UserID / ShopID)
 4. Enter a path writeable for the Webserver to cache documents (should be by default: /tmp on most linux/unix systems)
 5. Use the following tags at the desired pages [janolaw_agb], [janolaw_impressum], [janolaw_widerrufsbelehrung], [janolaw_datenschutzerklaerung]
 6. Done !
+
+Opional: if you change the language of the documents, it may be necessary to rename the title tags of the desired pages.
 
 == Frequently Asked Questions ==
 
 = What if i have a question? =
 
-Write your question at wordpress@code-worx.de !
+Please contact janolaw for support.
 
 = Howto style the documents?
 
@@ -55,6 +57,18 @@ Use this CSS !
 1. Janolaw Settings
 
 == Changelog ==
+
+= 3.0 =
+* added support for Wordpress 4.3
+* added widerrufsbelehrung Form
+* added clear cache button
+* added PDF download of documents if PDF provided by janolaw
+* added service availability check
+* added language selection for documents at backend
+* added language selection by browser
+* service update notification 
+* fixed permalink generation
+* enhanced plugin messages for info, notice and errors
 
 = 2.2 =
 * added multilanguage files for English + German
