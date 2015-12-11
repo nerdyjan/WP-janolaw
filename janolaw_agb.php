@@ -3,7 +3,7 @@
 Plugin Name: Janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by Janolaw AG for Web-Shops and Pages.
-Version: 3.1
+Version: 3.2
 Author: Jan Giebels
 Author URI: http://code-worx.de
 License: GPL2
@@ -158,17 +158,17 @@ function janolaw_server_check() {
 
 
 		# check for version 1
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/agb_include.html');
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/legaldetails_include.html');
 		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
 			update_option( "janolaw_version", 1 );
 		}
 		# check for version 2
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/terms_include.html');
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails_include.html');
 		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
 			update_option( "janolaw_version", 2 );
 		}
 		# check for version 3
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/gb/terms_include.html');
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails.pdf');
 		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
 			update_option( "janolaw_version", 3 );
 		}
@@ -365,7 +365,7 @@ function janolaw_server_check() {
 
 function janolaw_page($content) {
 	if (preg_match("/\[janolaw_(.*)\]/", $content, $type)) {
-		$content = _get_document($type[1]);
+		$content =  preg_replace("/\[janolaw_(.*)\]/", _get_document($type[1]), $content);
 	}
 	return $content;
 }
