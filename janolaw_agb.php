@@ -3,7 +3,7 @@
 Plugin Name: Janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by Janolaw AG for Web-Shops and Pages.
-Version: 3.2
+Version: 3.3
 Author: Jan Giebels
 Author URI: http://code-worx.de
 License: GPL2
@@ -216,8 +216,20 @@ function janolaw_server_check() {
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e('Cache Path', 'janolaw_agb'); ?></th>
-				<td><input type="text" name="janolaw_cache_path"
-					value="<?= $cachepath ?>" /> <small><?php _e('Path to store cached documents e.g. /tmp for Unix based systems like Linux', 'janolaw_agb'); ?></small>
+				<td>
+					<?php 
+						if (is_writeable($cachepath)) {
+							$cachepathcheck = "<img src='".site_url()."/wp-content/plugins/janolaw-agb-hosting/images/ok.png' />" . __('Path is writable', 'janolaw_agb');
+						} elseif (is_writeable(get_home_path()."wp-content/plugins/janolaw-agb-hosting")) {
+							$cachepathcheck = "<img src='".site_url()."/wp-content/plugins/janolaw-agb-hosting/images/ok.png' />" . __('Path is writable, but alternative path is used.', 'janolaw_agb');
+							$cachepath = get_home_path()."wp-content/plugins/janolaw-agb-hosting";
+						} else {
+							$cachepathcheck = "<img src='".site_url()."/wp-content/plugins/janolaw-agb-hosting/images/error.png' />" . __('Path is NOT writable and no writable path could be detected. Please contact your system administrator.', 'janolaw_agb');
+						}
+					?>
+					<input type="text" name="janolaw_cache_path" value="<?= $cachepath ?>" /> 
+					<small><?php _e('Path to store cached documents e.g. /tmp for Unix based systems like Linux', 'janolaw_agb'); ?></small><br />
+					<small><?= $cachepathcheck ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
