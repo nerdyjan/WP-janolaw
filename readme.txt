@@ -1,8 +1,8 @@
 === Janolaw AGB Hosting ===
 Tags: legal documents, shop, imprint, disclaimer, privacy
 Requires at least: 3.0
-Tested up to: 4.4.2
-Stable tag: 3.3
+Tested up to: 4.6.1
+Stable tag: 3.4
 
 This plugin get legal documents provided by janolaw AG (commercial service) like AGB, Imprint etc. for Webshops and Pages. (German Service only)
 
@@ -58,6 +58,12 @@ Use this CSS !
 1. Janolaw Settings
 
 == Changelog ==
+
+= 3.4 =
+
+* added enhanced visual style for plugin repository of wordpress
+* fixed document retrival for hosts which doesn't allow the usage of some security related php file functions (e.g. fopen)
+* added preprations for translations
 
 = 3.3 =
 

@@ -1,11 +1,13 @@
 <?php
 /*
-Plugin Name: Janolaw AGB Hosting
+Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
-Description: This Plugin get hosted legal documents provided by Janolaw AG for Web-Shops and Pages.
-Version: 3.3
+Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
+Version: 3.4
 Author: Jan Giebels
-Author URI: http://code-worx.de
+Text Domain: janolaw-agb-hosting
+Domain Path: /languages
+Author URI: https://www.conspir3d.com
 License: GPL2
 */
 ?>
@@ -29,6 +31,11 @@ License: GPL2
 <?php
 
 load_plugin_textdomain('janolaw_agb', "/wp-content/plugins/janolaw_agb/languages/");
+add_action('plugins_loaded', 'wan_load_textdomain');
+
+function wan_load_textdomain() {
+	load_plugin_textdomain( 'janolaw-agb-hosting', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+}
 
 function janolaw_agb_menu() {
 	add_options_page('Janolaw AGB Hosting', 'Janolaw AGB Hosting', 9, basename(__FILE__), 'janolaw_plugin_options');
@@ -60,7 +67,7 @@ function register_janolaw_settings() {
 function janolaw_plugin_options() {
 	# check permission
 	if (!current_user_can('manage_options'))  {
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'janolaw-agb-hosting') );
 	}
 
 	# predefine cache path if not entered yet
@@ -85,7 +92,7 @@ function janolaw_plugin_options() {
 			'post_content' => '[janolaw_agb]',
 			'post_name' => 'agb',
 			'post_status' => 'publish',
-			'post_title' => 'Allgemeine Gesch&auml;ftsbedingungen',
+			'post_title' => __('Allgemeine Gesch&auml;ftsbedingungen','janolaw-agb-hosting'),
 			'post_type' => 'page'
 		);
 		$id = wp_insert_post( $post );
@@ -98,7 +105,7 @@ function janolaw_plugin_options() {
 				'post_content' => '[janolaw_impressum]',
 				'post_name' => 'imprint',
 				'post_status' => 'publish',
-				'post_title' => 'Impressum',
+				'post_title' => __('Impressum','janolaw-agb-hosting'),
 				'post_type' => 'page'
 		);
 		$id = wp_insert_post( $post );
@@ -111,7 +118,7 @@ function janolaw_plugin_options() {
 				'post_content' => '[janolaw_widerrufsbelehrung]',
 				'post_name' => 'widerrufsbelehrung',
 				'post_status' => 'publish',
-				'post_title' => 'Widerrufsbelehrung',
+				'post_title' => __('Widerrufsbelehrung','janolaw-agb-hosting'),
 				'post_type' => 'page'
 		);
 		$id = wp_insert_post( $post );
@@ -124,7 +131,7 @@ function janolaw_plugin_options() {
 				'post_content' => '[janolaw_widerrufsformular]',
 				'post_name' => 'widerrufsformular',
 				'post_status' => 'publish',
-				'post_title' => 'Widerrufsformular',
+				'post_title' => __('Widerrufsformular','janolaw-agb-hosting'),
 				'post_type' => 'page'
 		);
 		$id = wp_insert_post( $post );
@@ -137,7 +144,7 @@ function janolaw_plugin_options() {
 				'post_content' => '[janolaw_datenschutzerklaerung]',
 				'post_name' => 'privacy',
 				'post_status' => 'publish',
-				'post_title' => 'Datenschutzerkl&auml;rung',
+				'post_title' => __('Datenschutzerkl&auml;rung','janolaw-agb-hosting'),
 				'post_type' => 'page'
 		);
 		$id = wp_insert_post( $post );
@@ -447,10 +454,8 @@ function _get_document($type) {
 			}
 		}
 	} else {
-		$file = file_get_contents($base_path.'_include.html');
-		$fp = fopen($cache_file, 'w');
-		fwrite($fp, $file);
-		fclose($fp);
+		$file = url_get_contents($base_path.'_include.html');
+		file_put_contents($cache_file, $file);
 	}
 	# PDF Links
 	if (get_option('janolaw_pdf_top') == 1) {
@@ -465,6 +470,19 @@ function _get_document($type) {
 	} else {
 		return "<div style='border: #DF0101 1px solid; border-left: #DF0101 6px solid; padding-left: 10px; '>Ein Fehler ist aufgetreten! Bitte &uuml;berpr&uuml;fen Sie ihre Janolaw UserID und ShopID in Ihrer Konfiguration und ob der Cache Pfad beschreibbar ist! # $language # $type # $base_path # $cache_file </div>";
 	}
+}
+
+function url_get_contents ($Url) {
+    if (!function_exists('curl_init')){ 
+        $output = file_get_contents($Url);
+        return $output;
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $Url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $output = curl_exec($ch);
+    curl_close($ch);
+    return $output;
 }
 
 add_action('admin_menu', 'janolaw_agb_menu');
