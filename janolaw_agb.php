@@ -2,8 +2,8 @@
 /*
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
-Description: This plugin get legal documents provided by janolaw AG (commercial service) like General Terms, Imprint etc. for Webshops and Pages. (German Service only)
-Version: 3.5
+Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
+Version: 3.6
 Author: Jan Giebels
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -12,7 +12,7 @@ License: GPL2
 */
 ?>
 <?php
-/*  Copyright 2012  Conspir3D GmbH, Jan Giebels  (email : info@conspir3d.com)
+/*  Copyright 2012  Code-WorX, Jan Giebels  (email : wordpress@code-worx.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -34,7 +34,7 @@ load_plugin_textdomain('janolaw-agb-hosting', "/wp-content/plugins/janolaw-agb-h
 add_action('plugins_loaded', 'wan_load_textdomain');
 
 function wan_load_textdomain() {
-	load_plugin_textdomain( 'janolaw-agb-hosting', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+	load_plugin_textdomain( 'janolaw-agb-hosting', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
 }
 
 function janolaw_agb_menu() {
@@ -204,25 +204,25 @@ function janolaw_server_check() {
 			<tr valign="top">
 				<th scope="row">Janolaw User ID</th>
 				<td><input type="text" name="janolaw_user_id"
-					value="<?= get_option('janolaw_user_id'); ?>" /> <small><?php __('Your janolaw User ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?php __('Janolaw
+					value="<?= get_option('janolaw_user_id'); ?>" /> <small><?= __('Your janolaw User ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw
 						AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">Janolaw Shop ID</th>
 				<td><input type="text" name="janolaw_shop_id"
-					value="<?= get_option('janolaw_shop_id'); ?>" /> <small><?php __('Your janolaw Shop ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?php __('Janolaw
+					value="<?= get_option('janolaw_shop_id'); ?>" /> <small><?= __('Your janolaw Shop ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw
 						AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 		</table>
 
 		<br />
-		<h3 class="title"><?php __('Settings', 'janolaw-agb-hosting'); ?></h3>
+		<h3 class="title"><?= __('Settings', 'janolaw-agb-hosting'); ?></h3>
 
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php __('Cache Path', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Cache Path', 'janolaw-agb-hosting'); ?></th>
 				<td>
 					<?php 
 						if (is_writeable($cachepath)) {
@@ -235,122 +235,122 @@ function janolaw_server_check() {
 						}
 					?>
 					<input type="text" name="janolaw_cache_path" value="<?= $cachepath ?>" /> 
-					<small><?php __('Path to store cached documents e.g. /tmp for Unix based systems like Linux', 'janolaw-agb-hosting'); ?></small><br />
+					<small><?= __('Path to store cached documents e.g. /tmp for Unix based systems like Linux', 'janolaw-agb-hosting'); ?></small><br />
 					<small><?= $cachepathcheck ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php __('Clear Cache', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Clear Cache', 'janolaw-agb-hosting'); ?></th>
 				<td>
 					<input type="checkbox" name="janolaw_cache_clear" value="1" <?= checked( 1, get_option('janolaw_cache_clear'), false ) ?> /> 
-					<small><?php __('Check to clear cache & refresh from server by next pagecall', 'janolaw-agb-hosting'); ?></small>
+					<small><?= __('Check to clear cache & refresh from server by next pagecall', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 
 
 			<?php if ($versionnumber == 3): ?>
 			<tr valign="top">
-				<th scope="row"><?php __('Language', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Language', 'janolaw-agb-hosting'); ?></th>
 				<td>
 					<select name="janolaw_language">
-						<option value="auto" <?= selected( 'auto', get_option('janolaw_language'), false ) ?>><?php __('Automatic', 'janolaw-agb-hosting'); ?></option>
-						<option value="de" <?= selected( 'de', get_option('janolaw_language'), false ) ?>><?php __('German', 'janolaw-agb-hosting'); ?></option>
-						<option value="gb" <?= selected( 'gb', get_option('janolaw_language'), false ) ?>><?php __('English', 'janolaw-agb-hosting'); ?></option>
-						<option value="fr" <?= selected( 'fr', get_option('janolaw_language'), false ) ?>><?php __('French', 'janolaw-agb-hosting'); ?></option>
+						<option value="auto" <?= selected( 'auto', get_option('janolaw_language'), false ) ?>><?= __('Automatic', 'janolaw-agb-hosting'); ?></option>
+						<option value="de" <?= selected( 'de', get_option('janolaw_language'), false ) ?>><?= __('German', 'janolaw-agb-hosting'); ?></option>
+						<option value="gb" <?= selected( 'gb', get_option('janolaw_language'), false ) ?>><?= __('English', 'janolaw-agb-hosting'); ?></option>
+						<option value="fr" <?= selected( 'fr', get_option('janolaw_language'), false ) ?>><?= __('French', 'janolaw-agb-hosting'); ?></option>
 					</select>
-					<small><?php __('Select language for pages', 'janolaw-agb-hosting'); ?></small>
+					<small><?= __('Select language for pages', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php else: ?>
 			<tr valign="top">
-				<th scope="row"><?php __('Language', 'janolaw-agb-hosting'); ?></th>
-				<td><small><?php __('Upgrade to version 3 to use other languages', 'janolaw-agb-hosting'); ?></small>
+				<th scope="row"><?= __('Language', 'janolaw-agb-hosting'); ?></th>
+				<td><small><?= __('Upgrade to version 3 to use other languages', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php endif; ?>
 
 			<?php if ($versionnumber == 3): ?>
 			<tr valign="top">
-				<th scope="row"><?php __('PDF top download', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('PDF top download', 'janolaw-agb-hosting'); ?></th>
 				<td>
 					<input type="checkbox" name="janolaw_pdf_top" value="1" <?= checked( 1, get_option('janolaw_pdf_top'), false ) ?> /> 
-					<small><?php __('Include PDF download links on top of pages content', 'janolaw-agb-hosting'); ?></small>
+					<small><?= __('Include PDF download links on top of pages content', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php __('PDF bottom download', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('PDF bottom download', 'janolaw-agb-hosting'); ?></th>
 				<td>
 					<input type="checkbox" name="janolaw_pdf_bottom" value="1" <?= checked( 1, get_option('janolaw_pdf_bottom'), false ) ?> /> 
-					<small><?php __('Include PDF download links on bottom of pages content', 'janolaw-agb-hosting'); ?></small>
+					<small><?= __('Include PDF download links on bottom of pages content', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php else: ?>
 			<tr valign="top">
-				<th scope="row"><?php __('PDF support', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('PDF support', 'janolaw-agb-hosting'); ?></th>
 				<td>
-					<small><?php __('Include PDF download links on top/bottom of pages content for download. Upgrade to version 3 to use this!', 'janolaw-agb-hosting'); ?></small>
+					<small><?= __('Include PDF download links on top/bottom of pages content for download. Upgrade to version 3 to use this!', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php endif; ?>
 		</table>
 
 		<br />
-		<h3 class="title"><?php __('Page creation', 'janolaw-agb-hosting'); ?></h3>
+		<h3 class="title"><?= __('Page creation', 'janolaw-agb-hosting'); ?></h3>
 
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page AGB', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Create Page AGB', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_agb_page_id" value ="<?= get_option('janolaw_agb_page_id'); ?>" />
 				<input type="checkbox" name="janolaw_agb_page"
-					value ="1" /> <small><?php __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page Imprint', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Create Page Imprint', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_imprint_page_id" value ="<?= get_option('janolaw_imprint_page_id'); ?>" />
 					<input type="checkbox" name="janolaw_imprint_page"
-					value ="1" /> <small><?php __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page Widerruf', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Create Page Widerruf', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_widerruf_page_id" value ="<?= get_option('janolaw_widerruf_page_id'); ?>" />
 				<input type="checkbox" name="janolaw_widerruf_page"
-					value ="1" /> <small><?php __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 
 
 			<?php if ($versionnumber == 3): ?>
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page Widerrufsformular', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Create Page Widerrufsformular', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_widerrufform_page_id" value ="<?= get_option('janolaw_widerrufform_page_id'); ?>" />
 				<input type="checkbox" name="janolaw_widerrufform_page"
-					value ="1" /> <small><?php __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php else: ?>
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page Widerrufsformular', 'janolaw-agb-hosting'); ?></th>
-				<td><small><?php __('Upgrade to version 3 to use the Widerrufsformular or insert the document by copy & paste', 'janolaw-agb-hosting'); ?></small>
+				<th scope="row"><?= __('Create Page Widerrufsformular', 'janolaw-agb-hosting'); ?></th>
+				<td><small><?= __('Upgrade to version 3 to use the Widerrufsformular or insert the document by copy & paste', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php endif; ?>
 
 
 			<tr valign="top">
-				<th scope="row"><?php __('Create Page Privacy', 'janolaw-agb-hosting'); ?></th>
+				<th scope="row"><?= __('Create Page Privacy', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_privacy_page_id" value ="<?= get_option('janolaw_privacy_page_id'); ?>" />
 				<input type="checkbox" name="janolaw_privacy_page"
-					value ="1" /> <small><?php __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><h3><?php __('Howto', 'janolaw-agb-hosting'); ?></h3></th>
-				<td><?php __('Check the Checkbox of the desired document to create the page automatically.', 'janolaw-agb-hosting'); ?>
+				<th scope="row"><h3><?= __('Howto', 'janolaw-agb-hosting'); ?></h3></th>
+				<td><?= __('Check the Checkbox of the desired document to create the page automatically.', 'janolaw-agb-hosting'); ?>
 				<br /><br />
-					<i><?php __('Alternative:', 'janolaw_agb'); ?></i><br />
-					<?php __('Insert one of the following Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
+					<i><?= __('Alternative:', 'janolaw_agb'); ?></i><br />
+					<?= __('Insert one of the following Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
 						<blockquote>
 						[janolaw_agb]<br />
 						[janolaw_impressum]<br />
@@ -365,7 +365,7 @@ function janolaw_server_check() {
 
 		<p class="submit">
 			<input type="submit" class="button-primary"
-				value="<?php __('Save Changes', 'janolaw-agb-hosting'); ?>" />
+				value="<?= __('Save Changes', 'janolaw-agb-hosting'); ?>" />
 		</p>
 	</form>
 </div>
