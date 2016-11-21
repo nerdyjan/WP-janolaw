@@ -1,22 +1,52 @@
 === Janolaw AGB Hosting ===
-Tags: legal documents, shop, imprint, disclaimer, privacy
+Tags: agb, Impressum, Datenschutzerklärung, Widerrufsbelehrung, Rechtstexte, disclaimer, imprint, legal documents, privacy, revocation, datasecurity, model withdrawal, general terms and conditions, shop, blog, website, janolaw
 Requires at least: 3.0
 Tested up to: 4.6.1
-Stable tag: 3.6
+Stable tag: 3.6.1
 
-This plugin get legal documents provided by janolaw AG (commercial service) like AGB, Imprint etc. for Webshops and Pages. (German Service only)
+This plugin gets legal documents provided by janolaw AG (commercial service) like General terms, Imprint etc. for Webshops and Pages. (German Service only)
 
 == Description ==
 
-This plugin get legal documents provided by janolaw AG (commercial service) like terms of use, imprint etc. for webshops and pages.
+English description
+
+General terms and conditions, cancellation policy, model withdrawal form or privacy policy and the legal disclosure belong to the legal basic equipment of an online shop or web page. New developments of the legal situation driven by case law and new statutory law have the effect that these documents do not reflect the actual legal requirements. This may encourage your competitors to legally challenge your online shop or Internet presence.
+Therefore, all shop and website operators must keep up their legal knowledge with the current development with respect to the case law and the statutory law, or accept the risk vested to invalid legal documents. Or you entrust this task to janolaw – and focus on your business solely.
+With the janolaw Plugin for WordPress your shop and website is provided with the valid legal documents with automatic updates, and you are protected from all liabilities in connection with these documents. 
+janolaw AGB Hosting-Service for online traders and janolaw Rechtstext-Service for website owners enables to create taylor-made german legal documents (option for translation to English and French) and to integrate them with the extension into the CMS of WordPress
+The module implements an interface between WordPress and the janolaw-Service. After the implementation of the extension the legal texts are imported on the respective websites. The documents are updated automatically and always according thereby to the current law. 
+
+These documents are part of the janolaw Rechtstext-Service and janolaw AGB Hosting-Service package and will be updated regularly:
+
+* Imprint * Data privacy policy * General Terms and Conditions * Instructions on withdrawal * Model withdrawal form 
 For more Informations visit: 
 
 * <a href="http://www.janolaw.de/internetrecht/agb/agb-hosting-service/" target="_blank">AGB-Service for Webshops</a>
-* <a href="https://www.janolaw.de/internetrecht/internetshop/abmahnschutz-internetshop.html#menu" target="_blank">Documentservice for webpages</a>
 * <a href="https://www.janolaw.de/internetrecht/firmen-webseiten/datenschutzerklaerung_impressum.html#menu" target="_blank">Websites & Blogs</a>
 * <a href="http://www.janolaw.de/agb-service/einbindung-wordpress.html#menu" target="_blank">Manual for Wordpress integration</a>
 
 The service provide german, english and french documents!
+
+
+German description
+
+AGB, Widerrufsbelehrung, Muster-Widerrufsformular bzw. Datenschutzerklärung und Impressum gehören zur rechtlichen Grundausstattung eines Onlineshops bzw. Webseite. Doch ständig neue Gerichtsurteile und Gesetzesänderungen sorgen dafür, dass diese Dokumente schnell wieder veralten. Dies wiederum kann Mitbewerber ermuntern Ihren Online-Shop bzw. Internetpräsenz abzumahnen.
+Als Shopbetreiber bzw. Inhaber einer Webseite müssen Sie sich somit ständig über die neusten Entwicklungen der Gesetzgebung und Rechtsprechung auf dem Laufenden halten – oder mit dem Risiko veralteter Dokumente leben. Sie können die Pflege und das Risiko für Ihre Dokumente aber auch an das Rechtsportal janolaw „outsourcen“ – und sich in Ruhe Ihrem Business widmen.
+Mit dem janolaw Plugin für WordPress sind Sie durch aktuelle Dokumente, automatische Updates und Abmahnkostenhaftung dauerhaft auf der sicheren Seite – und gewinnen zusätzlich Zeit für Ihr Kerngeschäft. 
+Mit dem janolaw AGB Hosting-Service für Online-Händler und dem janolaw Rechtstext-Service für Webseiten Besitzer ist es möglich die rechtlich erforderlichen deutschen Dokumente selbst individuell zu erstellen und in das CMS von WordPress einzubinden.
+Das Modul implementiert eine Schnittstelle zwischen Wordpress und dem janolaw Service. Nach der Implementierung der Erweiterung werden die rechtlichen Texte auf den jeweiligen Webseiten eingespielt. Die Dokumente werden automatisch aktualisiert und entsprechen dadurch immer dem aktuellen Recht.
+
+Diese Dokumente sind Teil des janolaw Rechtstext bzw. AGB Hosting-Service Pakets und werden regelmäßig aktualisiert:
+
+* Impressum * Datenschutzerklärung * AGB * Widerrufsbelehrung * Muster-Widerrufsformular
+
+Für weitere Informationen besuchen Sie bitte: 
+
+* <a href="http://www.janolaw.de/internetrecht/agb/agb-hosting-service/" target="_blank">AGB-Service für Webshops</a>
+* <a href="https://www.janolaw.de/internetrecht/firmen-webseiten/datenschutzerklaerung_impressum.html#menu" target="_blank">Webseiten & Blogs</a>
+* <a href="http://www.janolaw.de/agb-service/einbindung-wordpress.html#menu" target="_blank">Anleitung Wordpress Integration</a>
+
+Dieser Service bietet die Dokumente in deutsch, englisch und französisch an!
 
 == Installation ==
 
@@ -63,6 +93,11 @@ Use this CSS !
 1. Janolaw Settings
 
 == Changelog ==
+
+= 3.6.1 =
+
+* added more comprehensive description
+* changed versioning: <major>.<minor>.<maintnance>
 
 = 3.6 =
 
