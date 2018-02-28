@@ -3,8 +3,8 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 3.6.2
-Author: Jan Giebels
+Version: 3.7
+Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
 Author URI: https://www.conspir3d.com
@@ -12,7 +12,7 @@ License: GPL2
 */
 ?>
 <?php
-/*  Copyright 2012  Code-WorX, Jan Giebels  (email : wordpress@code-worx.de)
+/*  Copyright 2018  Conspir3D GmbH, Jan Giebels  (email : info@conspir3d.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -49,6 +49,7 @@ function register_janolaw_settings() {
 	register_setting( 'janolaw-settings-group', 'janolaw_cache_path' );
 	register_setting( 'janolaw-settings-group', 'janolaw_cache_clear' );
 	register_setting( 'janolaw-settings-group', 'janolaw_language' );
+	register_setting( 'janolaw-settings-group', 'janolaw_language_default' );
 	register_setting( 'janolaw-settings-group', 'janolaw_agb_page' );
 	register_setting( 'janolaw-settings-group', 'janolaw_imprint_page' );
 	register_setting( 'janolaw-settings-group', 'janolaw_widerruf_page' );
@@ -203,23 +204,20 @@ function janolaw_server_check() {
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row">Janolaw User ID</th>
-				<td><input type="text" name="janolaw_user_id"
-					value="<?= get_option('janolaw_user_id'); ?>" /> <small><?= __('Your janolaw User ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw
-						AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
+				<td><input type="text" name="janolaw_user_id" value="<?= get_option('janolaw_user_id'); ?>" /><br />
+					 <small><?= __('Your janolaw User ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">Janolaw Shop ID</th>
-				<td><input type="text" name="janolaw_shop_id"
-					value="<?= get_option('janolaw_shop_id'); ?>" /> <small><?= __('Your janolaw Shop ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw
-						AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
+				<td><input type="text" name="janolaw_shop_id" value="<?= get_option('janolaw_shop_id'); ?>" /><br />
+					<small><?= __('Your janolaw Shop ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 		</table>
 
 		<br />
 		<h3 class="title"><?= __('Settings', 'janolaw-agb-hosting'); ?></h3>
-
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?= __('Cache Path', 'janolaw-agb-hosting'); ?></th>
@@ -234,7 +232,7 @@ function janolaw_server_check() {
 							$cachepathcheck = "<img src='".site_url()."/wp-content/plugins/janolaw-agb-hosting/images/error.png' />" . __('Path is NOT writable and no writable path could be detected. Please contact your system administrator.', 'janolaw-agb-hosting');
 						}
 					?>
-					<input type="text" name="janolaw_cache_path" value="<?= $cachepath ?>" /> 
+					<input type="text" name="janolaw_cache_path" value="<?= $cachepath ?>" /><br />
 					<small><?= __('Path to store cached documents e.g. /tmp for Unix based systems like Linux', 'janolaw-agb-hosting'); ?></small><br />
 					<small><?= $cachepathcheck ?></small>
 				</td>
@@ -257,8 +255,20 @@ function janolaw_server_check() {
 						<option value="de" <?= selected( 'de', get_option('janolaw_language'), false ) ?>><?= __('German', 'janolaw-agb-hosting'); ?></option>
 						<option value="gb" <?= selected( 'gb', get_option('janolaw_language'), false ) ?>><?= __('English', 'janolaw-agb-hosting'); ?></option>
 						<option value="fr" <?= selected( 'fr', get_option('janolaw_language'), false ) ?>><?= __('French', 'janolaw-agb-hosting'); ?></option>
-					</select>
-					<small><?= __('Select language for pages', 'janolaw-agb-hosting'); ?></small>
+					</select><br />
+					<small><?= __('Select language for pages', 'janolaw-agb-hosting'); ?></small><br />
+					<small><?= __('If not set to \'auto\' the selected language will be used.', 'janolaw-agb-hosting'); ?></small>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?= __('Default language', 'janolaw-agb-hosting'); ?></th>
+				<td>
+					<select name="janolaw_language_default">
+						<option value="de" <?= selected( 'de', get_option('janolaw_language_default'), false ) ?>><?= __('German', 'janolaw-agb-hosting'); ?></option>
+						<option value="gb" <?= selected( 'gb', get_option('janolaw_language_default'), false ) ?>><?= __('English', 'janolaw-agb-hosting'); ?></option>
+						<option value="fr" <?= selected( 'fr', get_option('janolaw_language_default'), false ) ?>><?= __('French', 'janolaw-agb-hosting'); ?></option>
+					</select><br />
+					<small><?= __('Set default language for pages, if no matching language could be found.', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php else: ?>
@@ -301,22 +311,19 @@ function janolaw_server_check() {
 			<tr valign="top">
 				<th scope="row"><?= __('Create Page AGB', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_agb_page_id" value ="<?= get_option('janolaw_agb_page_id'); ?>" />
-				<input type="checkbox" name="janolaw_agb_page"
-					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+				<input type="checkbox" name="janolaw_agb_page" value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?= __('Create Page Imprint', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_imprint_page_id" value ="<?= get_option('janolaw_imprint_page_id'); ?>" />
-					<input type="checkbox" name="janolaw_imprint_page"
-					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+					<input type="checkbox" name="janolaw_imprint_page" value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?= __('Create Page Widerruf', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_widerruf_page_id" value ="<?= get_option('janolaw_widerruf_page_id'); ?>" />
-				<input type="checkbox" name="janolaw_widerruf_page"
-					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+				<input type="checkbox" name="janolaw_widerruf_page" value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 
@@ -325,8 +332,7 @@ function janolaw_server_check() {
 			<tr valign="top">
 				<th scope="row"><?= __('Create Page Widerrufsformular', 'janolaw-agb-hosting'); ?></th>
 				<td><input type="hidden" name="janolaw_widerrufform_page_id" value ="<?= get_option('janolaw_widerrufform_page_id'); ?>" />
-				<input type="checkbox" name="janolaw_widerrufform_page"
-					value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
+				<input type="checkbox" name="janolaw_widerrufform_page" value ="1" /> <small><?= __('Create a static page with pagetag included', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
 			<?php else: ?>
@@ -382,10 +388,25 @@ function janolaw_server_check() {
 
 }
 
-function janolaw_page($content) {
-	if (preg_match("/\[janolaw_(.*)\]/", $content, $type)) {
-		$content =  preg_replace("/\[janolaw_(.*)\]/", _get_document($type[1]), $content);
-	}
+
+function janolaw_get_agb_page() {
+	$content =  _get_document('agb', $content);
+	return $content;
+}
+function janolaw_get_impressum_page() {
+	$content =  _get_document('impressum', $content);
+	return $content;
+}
+function janolaw_get_widerrufsbelehrung_page() {
+	$content =  _get_document('widerrufsbelehrung', $content);
+	return $content;
+}
+function janolaw_get_widerrufsformular_page() {
+	$content =  _get_document('widerrufsformular', $content);
+	return $content;
+}
+function janolaw_get_datenschutzerklaerung_page() {
+	$content =  _get_document('datenschutzerklaerung', $content);
 	return $content;
 }
 
@@ -416,9 +437,12 @@ function _get_document($type) {
 	        	break;
 		    case "en":
 		        $language = 'gb';
-		        break;        
-		    default:
+		        break;
+		    case "de":
 		        $language = 'de';
+		        break;
+		    default:
+		        $language = get_option('janolaw_language_default');
 		        break;
 		}
 	}
@@ -486,6 +510,11 @@ function url_get_contents ($Url) {
 }
 
 add_action('admin_menu', 'janolaw_agb_menu');
-add_filter('the_content','janolaw_page');
+
+add_shortcode( 'janolaw_agb', 'janolaw_get_agb_page' );
+add_shortcode( 'janolaw_impressum', 'janolaw_get_impressum_page' );
+add_shortcode( 'janolaw_widerrufsbelehrung', 'janolaw_get_widerrufsbelehrung_page' );
+add_shortcode( 'janolaw_widerrufsformular', 'janolaw_get_widerrufsformular_page' );
+add_shortcode( 'janolaw_datenschutzerklaerung', 'janolaw_get_datenschutzerklaerung_page' );
 
 ?>
