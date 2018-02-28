@@ -198,6 +198,9 @@ function janolaw_server_check() {
 			echo janolaw_server_check();
 			$versionnumber = get_option('janolaw_version');
 		?>
+	<div id='setting-error-settings_updated' class='updated settings-error'>
+		<?= __('Please download & read the documentation !! -> ', 'janolaw-agb-hosting'); ?> <a href="<?= plugins_url() ?>/janolaw-agb-hosting/janolaw_AGB-Hosting-Dokumentation.pdf"><?= __('PDF Documentation', 'janolaw-agb-hosting'); ?></a>
+	</div>
 
 	<form method="post" action="options.php">
 		<?php settings_fields( 'janolaw-settings-group' ); ?>
