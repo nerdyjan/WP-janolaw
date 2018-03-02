@@ -94,6 +94,10 @@ Use this CSS !
 
 == Changelog ==
 
+= 3.7.2 =
+
+* fixed typo in function parameters - thanks to @soean
+
 = 3.7.1 =
 
 * fix for deprecated function parameters - thanks to "joe1860"
