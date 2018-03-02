@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 3.7
+Version: 3.7.1
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -30,7 +30,7 @@ License: GPL2
 ?>
 <?php
 
-load_plugin_textdomain('janolaw-agb-hosting', "/wp-content/plugins/janolaw-agb-hosting/lang/");
+load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
 function wan_load_textdomain() {
@@ -38,7 +38,7 @@ function wan_load_textdomain() {
 }
 
 function janolaw_agb_menu() {
-	add_options_page('Janolaw AGB Hosting', 'Janolaw AGB Hosting', 9, basename(__FILE__), 'janolaw_plugin_options');
+	add_options_page('Janolaw AGB Hosting', 'Janolaw AGB Hosting', administrator, basename(__FILE__), 'janolaw_plugin_options');
 	add_action( 'admin_init', 'register_janolaw_settings' );
 }
 
