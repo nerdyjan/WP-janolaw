@@ -5,8 +5,9 @@
 # The difference is that this script lives in the plugin's git repo & doesn't require an existing SVN repo.
 
 #prompt for plugin slug
-echo -e "Plugin Slug: \c"
-read PLUGINSLUG
+	#echo -e "Plugin Slug: \c"
+	#read PLUGINSLUG
+PLUGINSLUG="janolaw-agb-hosting"
 
 # main config
 CURRENTDIR=`pwd`
@@ -34,6 +35,13 @@ echo
 NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
 echo "readme version: $NEWVERSION1"
 
+# generate documentation from repo wiki
+cd /Users/jg/DEV/
+$GITPATH/wikidoc.py /usr/local/bin/wkhtmltopdf ./WP-janolaw.wiki
+
+rm wikidoc.html
+mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf ./WP-janolaw
+
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"
 read COMMITMSG
@@ -55,6 +63,8 @@ git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
 echo "Ignoring github specific & deployment script"
 svn propset svn:ignore "deploy.sh
+wikidoc.py
+wikidoc.html
 README.md
 .git
 .gitignore" "$SVNPATH/trunk/"
