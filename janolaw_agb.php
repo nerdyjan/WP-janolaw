@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 3.7.2
+Version: 4.0
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -63,6 +63,10 @@ function register_janolaw_settings() {
 	register_setting( 'janolaw-settings-group', 'janolaw_version' );
 	register_setting( 'janolaw-settings-group', 'janolaw_pdf_top' );
 	register_setting( 'janolaw-settings-group', 'janolaw_pdf_bottom' );
+	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_widerruf' );
+	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_agb' );
+	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_widerrufform' );
+	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_datenschutz' );
 }
 
 function janolaw_plugin_options() {
@@ -307,7 +311,52 @@ function janolaw_server_check() {
 			<?php endif; ?>
 		</table>
 
+
+
+
+
+
+
 		<br />
+		<h3 class="title"><?= __('WooCommerce integration', 'janolaw-agb-hosting'); ?></h3>
+		<?php if (class_exists( 'WooCommerce' )): ?>
+			<table class="form-table">
+			<tr valign="top">
+				<th scope="row"><?= __('Emailattachments', 'janolaw-agb-hosting'); ?><br /><small><?= __('Please clear cache once you setup WooCommerce  integration for the first time!', 'janolaw-agb-hosting'); ?></small></th>
+				<td>
+				<input type="checkbox" name="janolaw_woomail_order_agb" value ="1" <?= checked( 1, get_option('janolaw_woomail_order_agb'), false ) ?> /> <small><?= __('Attach AGB', 'janolaw-agb-hosting'); ?></small>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"></th>
+				<td>
+				<input type="checkbox" name="janolaw_woomail_order_widerruf" value ="1" <?= checked( 1, get_option('janolaw_woomail_order_widerruf'), false ) ?> /> <small><?= __('Attach Widerrufsbelehrung', 'janolaw-agb-hosting'); ?></small>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"></th>
+				<td>
+				<input type="checkbox" name="janolaw_woomail_order_widerrufform" value ="1" <?= checked( 1, get_option('janolaw_woomail_order_widerrufform'), false ) ?> /> <small><?= __('Attach Widerrufsbelehrungsformular', 'janolaw-agb-hosting'); ?></small>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"></th>
+				<td>
+				<input type="checkbox" name="janolaw_woomail_order_datenschutz" value ="1" <?= checked( 1, get_option('janolaw_woomail_order_datenschutz'), false ) ?> /> <small><?= __('Attach Datenschutzerklärung', 'janolaw-agb-hosting'); ?></small>
+				</td>
+			</tr>
+			</table>
+		<?php else: ?>
+			<?= __('WooCommerce is not activated. Please activate WooCommerce to setup janolaw WooCommerce integration to Emails.', 'janolaw-agb-hosting'); ?>
+		<?php endif; ?>
+
+
+
+
+
+
+
+
 		<h3 class="title"><?= __('Page creation', 'janolaw-agb-hosting'); ?></h3>
 
 		<table class="form-table">
@@ -393,24 +442,44 @@ function janolaw_server_check() {
 
 
 function janolaw_get_agb_page() {
-	$content =  _get_document('agb', $content);
+	$content =  _get_document('agb');
 	return $content;
 }
 function janolaw_get_impressum_page() {
-	$content =  _get_document('impressum', $content);
+	$content =  _get_document('impressum');
 	return $content;
 }
 function janolaw_get_widerrufsbelehrung_page() {
-	$content =  _get_document('widerrufsbelehrung', $content);
+	$content =  _get_document('widerrufsbelehrung');
 	return $content;
 }
 function janolaw_get_widerrufsformular_page() {
-	$content =  _get_document('widerrufsformular', $content);
+	$content =  _get_document('widerrufsformular');
 	return $content;
 }
 function janolaw_get_datenschutzerklaerung_page() {
-	$content =  _get_document('datenschutzerklaerung', $content);
+	$content =  _get_document('datenschutzerklaerung');
 	return $content;
+}
+
+function attach_documents_to_woo_mail ($attachments , $id, $object) {
+	$cachepath = get_option('janolaw_cache_path');
+	
+	if( $id == 'customer_processing_order'){
+		if (get_option('janolaw_woomail_order_agb')) {
+			array_push($attachments, $cachepath.'/agb.pdf');
+		}
+		if (get_option('janolaw_woomail_order_widerruf')) {
+			array_push($attachments, $cachepath.'/widerrufsbelehrung.pdf');
+		}
+		if (get_option('janolaw_woomail_order_widerrufform')) {
+			array_push($attachments, $cachepath.'/widerrufsformular.pdf');
+		}
+		if (get_option('janolaw_woomail_order_datenschutz')) {
+			array_push($attachments, $cachepath.'/datenschutzerklaerung.pdf');
+		}
+	}
+	return $attachments;
 }
 
 function _get_document($type) {
@@ -421,6 +490,7 @@ function _get_document($type) {
 	$cache_clear = get_option('janolaw_cache_clear');
 	$cache_time = 7200;
 	$base_url = 'http://www.janolaw.de/agb-service/shops/';
+	$cache_clear_msg = '';
 
 	# clear cache and force refresh from server
 	if ($cache_clear == 1) {
@@ -441,16 +511,17 @@ function _get_document($type) {
 		    case "en":
 		        $language = 'gb';
 		        break;
-		    case "de":
-		        $language = 'de';
-		        break;
 		    default:
-		        $language = get_option('janolaw_language_default');
+		    	$language = 'de';
+		    	if (get_option('janolaw_language_default')) {
+		    		$language = get_option('janolaw_language_default');
+		    	}
 		        break;
 		}
 	}
 
 	# document type translation from v1 to v2/3 of service
+	$pdf_naming_type = $type;
 	$translation = array (
 		'agb' => 'terms',
 		'impressum' => 'legaldetails',
@@ -481,8 +552,12 @@ function _get_document($type) {
 			}
 		}
 	} else {
-		$file = url_get_contents($base_path.'_include.html');
+		$file = janolaw_url_get_contents($base_path.'_include.html');
 		file_put_contents($cache_file, $file);
+		// get fresh PDF files too for woocoemmerce integration
+    	if ( class_exists( 'WooCommerce' ) ) {
+			file_put_contents($cache_path.'/'.$pdf_naming_type.'.pdf', fopen($base_path.'.pdf', 'r'));
+		}
 	}
 	# PDF Links
 	if (get_option('janolaw_pdf_top') == 1) {
@@ -499,7 +574,7 @@ function _get_document($type) {
 	}
 }
 
-function url_get_contents ($Url) {
+function janolaw_url_get_contents ($Url) {
     if (!function_exists('curl_init')){ 
         $output = file_get_contents($Url);
         return $output;
@@ -509,15 +584,18 @@ function url_get_contents ($Url) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($ch);
     curl_close($ch);
+
     return $output;
 }
 
 add_action('admin_menu', 'janolaw_agb_menu');
-
+add_filter( 'woocommerce_email_attachments', 'attach_documents_to_woo_mail', 10, 3);
 add_shortcode( 'janolaw_agb', 'janolaw_get_agb_page' );
 add_shortcode( 'janolaw_impressum', 'janolaw_get_impressum_page' );
 add_shortcode( 'janolaw_widerrufsbelehrung', 'janolaw_get_widerrufsbelehrung_page' );
 add_shortcode( 'janolaw_widerrufsformular', 'janolaw_get_widerrufsformular_page' );
 add_shortcode( 'janolaw_datenschutzerklaerung', 'janolaw_get_datenschutzerklaerung_page' );
+
+
 
 ?>

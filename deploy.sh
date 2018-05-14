@@ -36,11 +36,11 @@ NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
 echo "readme version: $NEWVERSION1"
 
 # generate documentation from repo wiki
-cd /Users/jg/DEV/
-$GITPATH/wikidoc.py /usr/local/bin/wkhtmltopdf ./WP-janolaw.wiki
+#cd /Users/jg/DEV/
+#$GITPATH/wikidoc.py /usr/bin/wkhtmltopdf ./WP-janolaw.wiki
 
-rm wikidoc.html
-mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf ./WP-janolaw
+#rm wikidoc.html
+#mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf $CURRENTDIR
 
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"
