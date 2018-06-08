@@ -97,6 +97,7 @@ Use this CSS !
 = 4.0.1 =
 
 * updated documentation
+* fix of initial default language on new installations
 * minor bug fixing of warning messages when debug flag in WP config is set to true
 * cachetiming changed
 

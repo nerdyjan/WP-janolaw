@@ -86,6 +86,11 @@ function janolaw_plugin_options() {
 	if (!$language) {
 		$language = "de";
 	}
+	# predefine language if not entered yet
+	$language = get_option('janolaw_language_default');
+	if (!$language) {
+		$language = "de";
+	}
 
 	
 	# create pages if not exist and checked to create
