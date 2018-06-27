@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.0.1
+Version: 4.1
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -69,6 +69,53 @@ function register_janolaw_settings() {
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_datenschutz' );
 }
 
+
+function janolaw_server_check() {
+	$base_url = 'http://www.janolaw.de/agb-service/shops/';
+	$user_id = get_option('janolaw_user_id');
+	$shop_id = get_option('janolaw_shop_id');
+
+	$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/');
+	$message = '';
+
+	if ($headers[0] == 'HTTP/1.1 404 Not Found') {
+		$message = "<div id='setting-error-settings_updated' class='error settings-error'>".__("janolaw server <u>not</u> avaiable","janolaw-agb-hosting")."</div>";
+	} else {
+
+
+		# check for version 1
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/legaldetails_include.html');
+		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+			update_option( "janolaw_version", 1 );
+		}
+		# check for version 2
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails_include.html');
+		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+			update_option( "janolaw_version", 2 );
+		}
+		# check for version 3
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails.pdf');
+		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+			update_option( "janolaw_version", 3 );
+		}
+
+		# check for version 3 + multilingual
+		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/fr/legaldetails.pdf');
+		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
+			update_option( "janolaw_version", 4 );
+		}
+
+		if (get_option('janolaw_version') <= 2) {
+			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Please update to version 3 of this service. You can do this by simply answering the questions of your services on the janolaw customer backend again, as they may have changed!<br />Your documents are than automatically updated after finishing the quiestions and you are good to go.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
+		}
+		if (get_option('janolaw_version') == 3) {
+			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Your service is capable of upgrading to multilanguage documents.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
+		}
+	}
+
+ 	return $message;
+}
+
 function janolaw_plugin_options() {
 	# check permission
 	if (!current_user_can('manage_options'))  {
@@ -85,11 +132,13 @@ function janolaw_plugin_options() {
 	$language = get_option('janolaw_language');
 	if (!$language) {
 		$language = "de";
+		update_option( "janolaw_language", "de" );
 	}
 	# predefine language if not entered yet
 	$language = get_option('janolaw_language_default');
 	if (!$language) {
 		$language = "de";
+		update_option( "janolaw_language_default", "de" );
 	}
 
 	
@@ -161,44 +210,6 @@ function janolaw_plugin_options() {
 		update_option( "janolaw_privacy_page_id", $id );
 	}
 
-
-function janolaw_server_check() {
-	$base_url = 'http://www.janolaw.de/agb-service/shops/';
-	$user_id = get_option('janolaw_user_id');
-	$shop_id = get_option('janolaw_shop_id');
-
-	$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/');
-
-	if ($headers[0] == 'HTTP/1.1 404 Not Found') {
-		$message = "<div id='setting-error-settings_updated' class='error settings-error'>".__("janolaw server <u>not</u> avaiable","janolaw-agb-hosting")."</div>";
-	} else {
-
-
-		# check for version 1
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/legaldetails_include.html');
-		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
-			update_option( "janolaw_version", 1 );
-		}
-		# check for version 2
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails_include.html');
-		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
-			update_option( "janolaw_version", 2 );
-		}
-		# check for version 3
-		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails.pdf');
-		if ($headers[0] != 'HTTP/1.1 404 Not Found') {
-			update_option( "janolaw_version", 3 );
-		}
-
-		$message = "<div id='setting-error-settings_updated' class='updated settings-error'>".__("janolaw server avaiable running service version","janolaw-agb-hosting") . " ".get_option('janolaw_version') ." " . __("for you!","janolaw-agb-hosting")."</div>";
-	}
-	if (get_option('janolaw_version') <= 2) {
-		$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Upgrade to service version 3 to use the 'Widerrufsformular' or add it manually. Please contact <a href='https://www.janolaw.de/ueber_janolaw/kontakt.html' target='_blank'>janolaw</a>","janolaw-agb-hosting")."</div>";
-	}
- 	return $message;
-}
-
-
 ?>
 
 <div class="wrap">
@@ -258,7 +269,7 @@ function janolaw_server_check() {
 			</tr>
 
 
-			<?php if ($versionnumber == 3): ?>
+			<?php if ($versionnumber == 4): ?>
 			<tr valign="top">
 				<th scope="row"><?= __('Language', 'janolaw-agb-hosting'); ?></th>
 				<td>
@@ -286,7 +297,7 @@ function janolaw_server_check() {
 			<?php else: ?>
 			<tr valign="top">
 				<th scope="row"><?= __('Language', 'janolaw-agb-hosting'); ?></th>
-				<td><small><?= __('Upgrade to version 3 to use other languages', 'janolaw-agb-hosting'); ?></small>
+				<td><b><?= __('Your service is capable of upgrading to multilanguage documents.<br /><br/> Please contact janolaw support for further questions and assistance.', 'janolaw-agb-hosting'); ?></b>
 				</td>
 			</tr>
 			<?php endif; ?>
@@ -412,17 +423,27 @@ function janolaw_server_check() {
 				<th scope="row"><h3><?= __('Howto', 'janolaw-agb-hosting'); ?></h3></th>
 				<td><?= __('Check the Checkbox of the desired document to create the page automatically.', 'janolaw-agb-hosting'); ?>
 				<br /><br />
-					<i><?= __('Alternative:', 'janolaw_agb'); ?></i><br />
 					<?= __('Insert one of the following Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
 						<blockquote>
 						[janolaw_agb]<br />
 						[janolaw_impressum]<br />
 						[janolaw_widerrufsbelehrung]<br />
-						<?php if ($versionnumber == 3): ?>
+						
 						[janolaw_widerrufsformular]<br />
-						<?php endif; ?>
 						[janolaw_datenschutzerklaerung]
-						</blockquote></td>
+						</blockquote>
+						<?php if ($versionnumber == 4): ?>
+					<?= __('Alternatively insert one of the following <u>hardcoded</u> Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
+						<blockquote>
+						[janolaw_agb_XX]<br />
+						[janolaw_impressum_XX]<br />
+						[janolaw_widerrufsbelehrung_XX]<br />
+						[janolaw_widerrufsformular_XX]<br />
+						[janolaw_datenschutzerklaerung_XX]<br /><br />
+						<?= __('where XX referes to the choosen language. Currently there are "de, "gb", "fr" supported.', 'janolaw-agb-hosting'); ?>
+						<?php endif; ?>
+						</blockquote>
+					</td>
 			</tr>
 		</table>
 
@@ -434,37 +455,6 @@ function janolaw_server_check() {
 </div>
 
 <?php
-
-/*
-<?= checked( 1, get_option('janolaw_agb_page'), false ) ?> 
-<?= checked( 1, get_option('janolaw_imprint_page'), false ) ?> 
-<?= checked( 1, get_option('janolaw_widerruf_page'), false ) ?> 
-<?= checked( 1, get_option('janolaw_widerrufform_page'), false ) ?>
-<?= checked( 1, get_option('janolaw_privacy_page'), false ) ?>
-*/
-
-}
-
-
-function janolaw_get_agb_page() {
-	$content =  _get_document('agb');
-	return $content;
-}
-function janolaw_get_impressum_page() {
-	$content =  _get_document('impressum');
-	return $content;
-}
-function janolaw_get_widerrufsbelehrung_page() {
-	$content =  _get_document('widerrufsbelehrung');
-	return $content;
-}
-function janolaw_get_widerrufsformular_page() {
-	$content =  _get_document('widerrufsformular');
-	return $content;
-}
-function janolaw_get_datenschutzerklaerung_page() {
-	$content =  _get_document('datenschutzerklaerung');
-	return $content;
 }
 
 function attach_documents_to_woo_mail ($attachments , $id, $object) {
@@ -487,16 +477,40 @@ function attach_documents_to_woo_mail ($attachments , $id, $object) {
 	return $attachments;
 }
 
-function _get_document($type) {
+function _get_document($type, $language = null) {
 	$cache_clear = 0;
 	$user_id = get_option('janolaw_user_id');
-	$shop_id = get_option('janolaw_shop_id');
-	$language = get_option('janolaw_language');
+	$shop_id = get_option('janolaw_shop_id');	
 	$cache_path = get_option('janolaw_cache_path');
 	$cache_clear = get_option('janolaw_cache_clear');
 	$cache_time = 43200;
 	$base_url = 'http://www.janolaw.de/agb-service/shops/';
 	$cache_clear_msg = '';
+
+	// use language for hardcoded tags
+	if (null === $language) {
+		$language = get_option('janolaw_language');
+
+		# language autodetect
+		if ($language == 'auto') {
+			$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+			switch ($lang) {
+		    	case "fr":
+		        	$language = 'fr';
+		        	break;
+			    case "en":
+			        $language = 'gb';
+			        break;
+			    default:
+			    	$language = 'de';
+			    	if (get_option('janolaw_language_default')) {
+			    		$language = get_option('janolaw_language_default');
+			    	}
+			        break;
+			}
+		}
+	}
+
 
 	# clear cache and force refresh from server
 	if ($cache_clear == 1) {
@@ -505,25 +519,6 @@ function _get_document($type) {
 		}
 		$cache_clear_msg = "<div style='border: border-left: #3ADF00 6px solid; padding-left: 10px;'>".__("Cleared cached documents!","janolaw-agb-hosting")."</div>";
 		update_option( "janolaw_cache_clear", 0 );
-	}
-
-	# language autodetect
-	if ($language == 'auto') {
-		$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-		switch ($lang){
-	    	case "fr":
-	        	$language = 'fr';
-	        	break;
-		    case "en":
-		        $language = 'gb';
-		        break;
-		    default:
-		    	$language = 'de';
-		    	if (get_option('janolaw_language_default')) {
-		    		$language = get_option('janolaw_language_default');
-		    	}
-		        break;
-		}
 	}
 
 	# document type translation from v1 to v2/3 of service
@@ -535,7 +530,7 @@ function _get_document($type) {
 		'datenschutzerklaerung' => 'datasecurity',
 		'widerrufsformular' => 'model-withdrawal-form'
 	);
-	if (get_option('janolaw_version') == 3) {
+	if (get_option('janolaw_version') >= 3) {
 		# translate type
 		$type = $translation[$type];
 		$base_path = $base_url.$user_id.'/'.$shop_id.'/'.$language.'/'.$type;
@@ -566,6 +561,8 @@ function _get_document($type) {
 		}
 	}
 	# PDF Links
+	$pdftop = '';
+	$pdfbottom = '';
 	if (get_option('janolaw_pdf_top') == 1) {
 		$pdftop = "<a class='janolaw-pdflink' href='".$base_path.".pdf' target='_blank'>".__("Download as PDF","janolaw-agb-hosting")."</a><br /><br />";
 	}
@@ -594,6 +591,90 @@ function janolaw_url_get_contents ($Url) {
     return $output;
 }
 
+function janolaw_get_agb_page() {
+	$content =  _get_document('agb');
+	return $content;
+}
+function janolaw_get_impressum_page() {
+	$content =  _get_document('impressum');
+	return $content;
+}
+function janolaw_get_widerrufsbelehrung_page() {
+	$content =  _get_document('widerrufsbelehrung');
+	return $content;
+}
+function janolaw_get_widerrufsformular_page() {
+	$content =  _get_document('widerrufsformular');
+	return $content;
+}
+function janolaw_get_datenschutzerklaerung_page() {
+	$content =  _get_document('datenschutzerklaerung');
+	return $content;
+}
+
+function janolaw_get_agb_page_de() {
+	$content =  _get_document('agb', 'de');
+	return $content;
+}
+function janolaw_get_impressum_page_de() {
+	$content =  _get_document('impressum', 'de');
+	return $content;
+}
+function janolaw_get_widerrufsbelehrung_page_de() {
+	$content =  _get_document('widerrufsbelehrung', 'de');
+	return $content;
+}
+function janolaw_get_widerrufsformular_page_de() {
+	$content =  _get_document('widerrufsformular', 'de');
+	return $content;
+}
+function janolaw_get_datenschutzerklaerung_page_de() {
+	$content =  _get_document('datenschutzerklaerung', 'de');
+	return $content;
+}
+
+function janolaw_get_agb_page_gb() {
+	$content =  _get_document('agb', 'gb');
+	return $content;
+}
+function janolaw_get_impressum_page_gb() {
+	$content =  _get_document('impressum', 'gb');
+	return $content;
+}
+function janolaw_get_widerrufsbelehrung_page_gb() {
+	$content =  _get_document('widerrufsbelehrung', 'gb');
+	return $content;
+}
+function janolaw_get_widerrufsformular_page_gb() {
+	$content =  _get_document('widerrufsformular', 'gb');
+	return $content;
+}
+function janolaw_get_datenschutzerklaerung_page_gb() {
+	$content =  _get_document('datenschutzerklaerung', 'gb');
+	return $content;
+}
+
+function janolaw_get_agb_page_fr() {
+	$content =  _get_document('agb', 'fr');
+	return $content;
+}
+function janolaw_get_impressum_page_fr() {
+	$content =  _get_document('impressum', 'fr');
+	return $content;
+}
+function janolaw_get_widerrufsbelehrung_page_fr() {
+	$content =  _get_document('widerrufsbelehrung', 'fr');
+	return $content;
+}
+function janolaw_get_widerrufsformular_page_fr() {
+	$content =  _get_document('widerrufsformular', 'fr');
+	return $content;
+}
+function janolaw_get_datenschutzerklaerung_page_fr() {
+	$content =  _get_document('datenschutzerklaerung', 'fr');
+	return $content;
+}
+
 add_action('admin_menu', 'janolaw_agb_menu');
 add_filter( 'woocommerce_email_attachments', 'attach_documents_to_woo_mail', 10, 3);
 add_shortcode( 'janolaw_agb', 'janolaw_get_agb_page' );
@@ -602,6 +683,22 @@ add_shortcode( 'janolaw_widerrufsbelehrung', 'janolaw_get_widerrufsbelehrung_pag
 add_shortcode( 'janolaw_widerrufsformular', 'janolaw_get_widerrufsformular_page' );
 add_shortcode( 'janolaw_datenschutzerklaerung', 'janolaw_get_datenschutzerklaerung_page' );
 
+add_shortcode( 'janolaw_agb_de', 'janolaw_get_agb_page_de' );
+add_shortcode( 'janolaw_impressum_de', 'janolaw_get_impressum_page_de' );
+add_shortcode( 'janolaw_widerrufsbelehrung_de', 'janolaw_get_widerrufsbelehrung_page_de' );
+add_shortcode( 'janolaw_widerrufsformular_de', 'janolaw_get_widerrufsformular_page_de' );
+add_shortcode( 'janolaw_datenschutzerklaerung_de', 'janolaw_get_datenschutzerklaerung_page_de' );
 
+add_shortcode( 'janolaw_agb_gb', 'janolaw_get_agb_page_gb' );
+add_shortcode( 'janolaw_impressum_gb', 'janolaw_get_impressum_page_gb' );
+add_shortcode( 'janolaw_widerrufsbelehrung_gb', 'janolaw_get_widerrufsbelehrung_page_gb' );
+add_shortcode( 'janolaw_widerrufsformular_gb', 'janolaw_get_widerrufsformular_page_gb' );
+add_shortcode( 'janolaw_datenschutzerklaerung_gb', 'janolaw_get_datenschutzerklaerung_page_gb' );
+
+add_shortcode( 'janolaw_agb_fr', 'janolaw_get_agb_page_fr' );
+add_shortcode( 'janolaw_impressum_fr', 'janolaw_get_impressum_page_fr' );
+add_shortcode( 'janolaw_widerrufsbelehrung_fr', 'janolaw_get_widerrufsbelehrung_page_fr' );
+add_shortcode( 'janolaw_widerrufsformular_fr', 'janolaw_get_widerrufsformular_page_fr' );
+add_shortcode( 'janolaw_datenschutzerklaerung_fr', 'janolaw_get_datenschutzerklaerung_page_fr' );
 
 ?>
