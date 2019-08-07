@@ -2,7 +2,7 @@
 Tags: agb, Impressum, Datenschutzerklärung, Widerrufsbelehrung, Rechtstexte, disclaimer, imprint, legal documents, privacy, revocation, datasecurity, model withdrawal, general terms and conditions, shop, blog, website, janolaw
 Requires at least: 3.0
 Tested up to: 5.2.2
-Stable tag: 4.2.3
+Stable tag: 4.2.4
 
 This plugin gets legal documents provided by janolaw AG (commercial service) like General terms, Imprint etc. for Webshops and Pages. (German Service only)
 
@@ -61,7 +61,12 @@ Opional: if you change the language of the documents, it may be necessary to ren
 
 == Frequently Asked Questions ==
 
-= What if i have a question? =
+= The documents dosn't get updated! What can i do?
+
+The document refresh interval is hardcoded to 12 hours to prevent to much server stress on the document server. If you cwant to refresh them manually because, e.g. you made changes, please tick the checkbox "Clear Cache" at the settng page and save the settings.
+The document cache get cleared and all documents will be refreshed directly from the server as soon as you click on of the desired pages.
+
+= What if i have another question? =
 
 Please contact janolaw for support at support@janolaw.de
 
@@ -93,6 +98,10 @@ Use this CSS !
 1. Janolaw Settings
 
 == Changelog ==
+
+= 4.2.4 =
+
+* updated FAQ
 
 = 4.2.3 =
 
