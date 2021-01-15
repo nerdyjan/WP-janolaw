@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.2.9
+Version: 4.2.10
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -440,7 +440,7 @@ function janolaw_plugin_options() {
 						[janolaw_widerrufsbelehrung_XX]<br />
 						[janolaw_widerrufsformular_XX]<br />
 						[janolaw_datenschutzerklaerung_XX]<br /><br />
-						<?= __('where XX referes to the choosen language. Currently there are "de, "gb", "fr" supported.', 'janolaw-agb-hosting'); ?>
+						<?= _('where XX referes to the choosen language. Currently there are "de, "gb", "fr" supported.', 'janolaw-agb-hosting'); ?>
 						<?php endif; ?>
 						</blockquote>
 					</td>
@@ -460,24 +460,26 @@ function janolaw_plugin_options() {
 function attach_documents_to_woo_mail ($attachments , $id, $object) {
 	$cachepath = get_option('janolaw_cache_path');
 	
-	if( $id == 'customer_processing_order'){
-		if (get_option('janolaw_woomail_order_agb')) {
-			$content =  _get_document('agb');
-			array_push($attachments, $cachepath.'/agb.pdf');
-		}
-		if (get_option('janolaw_woomail_order_widerruf')) {
-			$content =  _get_document('widerrufsbelehrung');
-			array_push($attachments, $cachepath.'/widerrufsbelehrung.pdf');
-		}
-		if (get_option('janolaw_woomail_order_widerrufform')) {
-			$content =  _get_document('widerrufsformular');
-			array_push($attachments, $cachepath.'/widerrufsformular.pdf');
-		}
-		if (get_option('janolaw_woomail_order_datenschutz')) {
-			$content =  _get_document('datenschutzerklaerung');
-			array_push($attachments, $cachepath.'/datenschutzerklaerung.pdf');
-		}
+	if ( empty( $object ) ) {
+        return $attachments;
+    }
+	if (get_option('janolaw_woomail_order_agb')) {
+		$content =  _get_document('agb');
+		array_push($attachments, $cachepath.'/agb.pdf');
 	}
+	if (get_option('janolaw_woomail_order_widerruf')) {
+		$content =  _get_document('widerrufsbelehrung');
+		array_push($attachments, $cachepath.'/widerrufsbelehrung.pdf');
+	}
+	if (get_option('janolaw_woomail_order_widerrufform')) {
+		$content =  _get_document('widerrufsformular');
+		array_push($attachments, $cachepath.'/widerrufsformular.pdf');
+	}
+	if (get_option('janolaw_woomail_order_datenschutz')) {
+		$content =  _get_document('datenschutzerklaerung');
+		array_push($attachments, $cachepath.'/datenschutzerklaerung.pdf');
+	}
+
 	return $attachments;
 }
 

@@ -1,8 +1,8 @@
 === Janolaw AGB Hosting ===
 Tags: agb, Impressum, Datenschutzerklärung, Widerrufsbelehrung, Rechtstexte, disclaimer, imprint, legal documents, privacy, revocation, datasecurity, model withdrawal, general terms and conditions, shop, blog, website, janolaw
 Requires at least: 3.0
-Tested up to: 5.4
-Stable tag: 4.2.9
+Tested up to: 5.6
+Stable tag: 4.2.10
 
 This plugin gets legal documents provided by janolaw AG (commercial service) like General terms, Imprint etc. for Webshops and Pages. (German Service only)
 
@@ -18,7 +18,7 @@ The module implements an interface between WordPress and the janolaw-Service. Af
 
 These documents are part of the janolaw Rechtstext-Service and janolaw AGB Hosting-Service package and will be updated regularly:
 
-* Imprint * Data privacy policy * General Terms and Conditions * Instructions on withdrawal * Model withdrawal form 
+* Imprint* Data privacy policy* General Terms and Conditions* Instructions on withdrawal* Model withdrawal form
 For more Informations visit: 
 
 * <a href="http://www.janolaw.de/internetrecht/agb/agb-hosting-service/" target="_blank">AGB-Service for Webshops</a>
@@ -38,7 +38,7 @@ Das Modul implementiert eine Schnittstelle zwischen Wordpress und dem janolaw Se
 
 Diese Dokumente sind Teil des janolaw Rechtstext bzw. AGB Hosting-Service Pakets und werden regelmäßig aktualisiert:
 
-* Impressum * Datenschutzerklärung * AGB * Widerrufsbelehrung * Muster-Widerrufsformular
+* Impressum* Datenschutzerklärung* AGB* Widerrufsbelehrung* Muster-Widerrufsformular
 
 Für weitere Informationen besuchen Sie bitte: 
 
@@ -98,6 +98,10 @@ Use this CSS !
 1. Janolaw Settings
 
 == Changelog ==
+
+= 4.2.10 =
+* updated Wordpress compatibility to 5.4
+* fixed WooCommerce attachments
 
 = 4.2.9 =
 
