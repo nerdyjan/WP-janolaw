@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.2.10
+Version: 4.3.0
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -67,6 +67,10 @@ function register_janolaw_settings() {
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_agb' );
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_widerrufform' );
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_datenschutz' );
+	register_setting( 'janolaw-settings-group', 'janolaw_plugin_version' );
+	# plugin version number
+	$plugin_data = get_plugin_data( __FILE__ );
+	update_option( "janolaw_plugin_version", $plugin_data['Version'] );
 }
 
 
@@ -140,7 +144,6 @@ function janolaw_plugin_options() {
 		$language = "de";
 		update_option( "janolaw_language_default", "de" );
 	}
-
 	
 	# create pages if not exist and checked to create
 	
@@ -219,7 +222,7 @@ function janolaw_plugin_options() {
 			$versionnumber = get_option('janolaw_version');
 		?>
 	<div id='setting-error-settings_updated' class='update-nag settings-error'>
-		<?= __('Please download & read the documentation !! -> ', 'janolaw-agb-hosting'); ?> <a href="<?= plugins_url() ?>/janolaw-agb-hosting/janolaw_AGB-Hosting-Dokumentation.pdf"><?= __('PDF Documentation', 'janolaw-agb-hosting'); ?></a>
+		<?= __('Please download & read the documentation !! -> ', 'janolaw-agb-hosting'); ?> <a href="https://api.janolaw.de/docs/plugins/wordpress/pdf/<?= get_option('janolaw_user_id') ?>/<?= get_option('janolaw_shop_id') ?>" target="_blank"><?= __('PDF Documentation', 'janolaw-agb-hosting'); ?></a>
 	</div>
 
 	<form method="post" action="options.php">
@@ -686,7 +689,37 @@ function janolaw_get_datenschutzerklaerung_page_fr() {
 	return $content;
 }
 
+function janolaw_api_call() {
+	$url = 'https://api.janolaw.de/pluginsettings';
+	$ch = curl_init($url);
+	$jsonData = array(
+		'userID' => get_option('janolaw_user_id'),
+		'shopID' => get_option('janolaw_shop_id'),
+		'plugin' => 'Wordpress',
+		'domain' => site_url(),
+		'pluginversion' => get_option('janolaw_plugin_version'),
+		'cmsversion' => 'Wordpress ' . get_bloginfo( 'version' ),
+		'settings' => '<b>Cache-Path:</b> ' . get_option('janolaw_cache_path') . '<br />'.
+						'<b>Language:</b> ' . get_option('janolaw_language') . '<br />'.
+						'<b>Language def.:</b> ' . get_option('janolaw_language_default') . '<br />'.
+						'<b>PDF top:</b> ' . get_option('janolaw_pdf_top') . '<br />'.
+						'<b>PDF bottom:</b> ' . get_option('janolaw_pdf_bottom') . '<br />',
+		'misc' => '<b>Woo att. Widerruf:</b> ' . get_option('janolaw_woomail_order_widerruf') . '<br />'.
+					'<b>Woo att. AGB.:</b> ' . get_option('janolaw_woomail_order_agb') . '<br />'.
+					'<b>Woo att. Form.:</b> ' . get_option('janolaw_woomail_order_widerrufform') . '<br />'.
+					'<b>Woo att. DSGVO.:</b> ' . get_option('janolaw_woomail_order_datenschutz') . '<br />',
+	);
+	$jsonDataEncoded = json_encode($jsonData);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+	curl_exec($ch); 
+}
+
 add_action('admin_menu', 'janolaw_agb_menu');
+add_action('updated_option', 'janolaw_api_call');
+add_action('upgrader_process_complete', 'janolaw_api_call');
+
 add_filter( 'woocommerce_email_attachments', 'attach_documents_to_woo_mail', 10, 3);
 add_shortcode( 'janolaw_agb', 'janolaw_get_agb_page' );
 add_shortcode( 'janolaw_impressum', 'janolaw_get_impressum_page' );
