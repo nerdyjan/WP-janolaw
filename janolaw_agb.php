@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.3.2
+Version: 4.3.3
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -29,9 +29,7 @@ License: GPL2
 */
 ?>
 <?php
-
-$janolaw_version = '4.3.2';
-
+$janolaw_version = '4.3.3';
 load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
@@ -70,6 +68,8 @@ function register_janolaw_settings() {
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_widerrufform' );
 	register_setting( 'janolaw-settings-group', 'janolaw_woomail_order_datenschutz' );
 	register_setting( 'janolaw-settings-group', 'janolaw_plugin_version' );
+	global $janolaw_version;
+	update_option( "janolaw_plugin_version", $janolaw_version );
 }
 
 function janolaw_server_check() {
@@ -209,6 +209,10 @@ function janolaw_plugin_options() {
 		);
 		$id = wp_insert_post( $post );
 		update_option( "janolaw_privacy_page_id", $id );
+	}
+
+	if ( isset( $_GET['settings-updated'] ) ) {
+		janolaw_api_call();
 	}
 
 ?>
@@ -688,14 +692,22 @@ function janolaw_get_datenschutzerklaerung_page_fr() {
 }
 
 function janolaw_api_call_upgrade() {
-	$current = get_option('janolaw_plugin_version');
+	global $janolaw_version;
+	if (get_option('janolaw_plugin_version'))
+	{
+		$current = get_option('janolaw_plugin_version');
+	} else {
+		register_setting( 'janolaw-settings-group', 'janolaw_plugin_version' );
+		update_option( "janolaw_plugin_version", $janolaw_version );
+		$current = $janolaw_version;
+	}
+
 	if ($current != $janolaw_version)
 	{
 		# update plugin version number
 		update_option( "janolaw_plugin_version", $janolaw_version );
 		janolaw_api_call();
 	}
-
 }
 
 function janolaw_api_call() {
@@ -713,10 +725,10 @@ function janolaw_api_call() {
 						'<b>Language def.:</b> ' . get_option('janolaw_language_default') . '<br />'.
 						'<b>PDF top:</b> ' . get_option('janolaw_pdf_top') . '<br />'.
 						'<b>PDF bottom:</b> ' . get_option('janolaw_pdf_bottom') . '<br />',
-		'misc' => '<b>Woo att. Widerruf:</b> ' . (get_option('janolaw_woomail_order_widerruf') == 1 ? 'Yes' : 'No') . '<br />'.
-					'<b>Woo att. AGB.:</b> ' . (get_option('janolaw_woomail_order_agb') == 1 ? 'Yes' : 'No') . '<br />'.
-					'<b>Woo att. Form.:</b> ' . (get_option('janolaw_woomail_order_widerrufform') == 1 ? 'Yes' : 'No') . '<br />'.
-					'<b>Woo att. DSGVO.:</b> ' . (get_option('janolaw_woomail_order_datenschutz') == 1 ? 'Yes' : 'No') . '<br />',
+		'misc' => '<b>Woo att. Widerruf:</b> ' . (get_option('janolaw_woomail_order_widerruf') == 1 ? 'Yes' : 'No' ). '<br />'.
+					'<b>Woo att. AGB.:</b> ' . (get_option('janolaw_woomail_order_agb') == 1 ? 'Yes' : 'No' ). '<br />'.
+					'<b>Woo att. Form.:</b> ' . (get_option('janolaw_woomail_order_widerrufform') == 1 ? 'Yes' : 'No' ). '<br />'.
+					'<b>Woo att. DSGVO.:</b> ' . (get_option('janolaw_woomail_order_datenschutz') == 1 ? 'Yes' : 'No' ). '<br />',
 	);
 	$jsonDataEncoded = json_encode($jsonData);
 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -726,7 +738,6 @@ function janolaw_api_call() {
 }
 
 add_action('admin_menu', 'janolaw_agb_menu');
-add_action('updated_option', 'janolaw_api_call');
 add_action('upgrader_process_complete', 'janolaw_api_call_upgrade');
 
 add_filter( 'woocommerce_email_attachments', 'attach_documents_to_woo_mail', 10, 3);
