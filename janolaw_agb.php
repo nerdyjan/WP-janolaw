@@ -29,7 +29,7 @@ License: GPL2
 */
 ?>
 <?php
-$janolaw_version = '4.3.3';
+$janolaw_version = '4.3.4';
 load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
@@ -445,7 +445,7 @@ function janolaw_plugin_options() {
 						[janolaw_widerrufsbelehrung_XX]<br />
 						[janolaw_widerrufsformular_XX]<br />
 						[janolaw_datenschutzerklaerung_XX]<br /><br />
-						<?= _('where XX referes to the choosen language. Currently there are "de, "gb", "fr" supported.', 'janolaw-agb-hosting'); ?>
+						<?= __('where XX referes to the choosen language. Currently there are "de, "gb", "fr" supported.', 'janolaw-agb-hosting'); ?>
 						<?php endif; ?>
 						</blockquote>
 					</td>
@@ -699,7 +699,7 @@ function janolaw_api_call_upgrade() {
 	} else {
 		register_setting( 'janolaw-settings-group', 'janolaw_plugin_version' );
 		update_option( "janolaw_plugin_version", $janolaw_version );
-		$current = $janolaw_version;
+		$current = 0;
 	}
 
 	if ($current != $janolaw_version)
