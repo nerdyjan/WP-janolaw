@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.3.6
+Version: 4.3.7
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -29,7 +29,7 @@ License: GPL2
 */
 ?>
 <?php
-$janolaw_version = '4.3.6';
+$janolaw_version = '4.3.7';
 load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
@@ -38,7 +38,7 @@ function wan_load_textdomain() {
 }
 
 function janolaw_agb_menu() {
-	add_options_page('Janolaw AGB Hosting', 'Janolaw AGB Hosting', 'administrator', basename(__FILE__), 'janolaw_plugin_options');
+	add_options_page('janolaw AGB Hosting', 'janolaw AGB Hosting', 'administrator', basename(__FILE__), 'janolaw_plugin_options');
 	add_action( 'admin_init', 'register_janolaw_settings' );
 }
 
@@ -108,7 +108,7 @@ function janolaw_server_check() {
 		}
 
 		if (get_option('janolaw_version') <= 2) {
-			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Please update to version 3 of this service. You can do this by simply answering the questions of your services on the janolaw customer backend again, as they may have changed!<br />Your documents are than automatically updated after finishing the quiestions and you are good to go.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
+			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Please update to version 3 of this service. You can do this by simply answering the questions of your services on the janolaw customer backend again, as they may have changed!<br />Your documents are than automatically updated after finishing the questions and you are good to go.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
 		}
 		if (get_option('janolaw_version') == 3) {
 			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Your service is capable of upgrading to multilanguage documents.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
@@ -218,29 +218,32 @@ function janolaw_plugin_options() {
 ?>
 
 <div class="wrap">
-	<h2>Janolaw AGB Hosting</h2>
+	<h2>janolaw AGB Hosting</h2>
 		<?php
 			echo janolaw_server_check();
 			$versionnumber = get_option('janolaw_version');
 		?>
-	<div id='setting-error-settings_updated' class='update-nag settings-error'>
-		<?= __('Please download & read the documentation !! -> ', 'janolaw-agb-hosting'); ?> <a href="https://api.janolaw.de/docs/plugins/wordpress/pdf/<?= get_option('janolaw_user_id') ?>/<?= get_option('janolaw_shop_id') ?>" target="_blank"><?= __('PDF Documentation', 'janolaw-agb-hosting'); ?></a>
+	<a href='https://www.janolaw.de/ueber_janolaw/kunden-werben-kunden.html?mtm_campaign=plugin-banner&mtm_source=wordpress#menu' target='_blank'>
+		<img src='https://janolaw.de/system/modules/de.janolaw.site/resources/images/plugin_banner.png' alt='Empfehlen Sie uns weiter!' title='Empfehlen Sie uns weiter!' />
+	</a></br>
+	<div id='setting-error-settings_updated' class='update-nag settings-error'><b>
+		<?= __('Please download & read the documentation !! -> ', 'janolaw-agb-hosting'); ?> <a href="https://api.janolaw.de/docs/plugins/wordpress/pdf/<?= get_option('janolaw_user_id') ?>/<?= get_option('janolaw_shop_id') ?>" target="_blank"><?= __('PDF Documentation', 'janolaw-agb-hosting'); ?></a></b>
 	</div>
 
 	<form method="post" action="options.php">
 		<?php settings_fields( 'janolaw-settings-group' ); ?>
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row">Janolaw User ID</th>
+				<th scope="row">janolaw User ID</th>
 				<td><input type="text" name="janolaw_user_id" value="<?= get_option('janolaw_user_id'); ?>" /><br />
 					 <small><?= __('Your janolaw User ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row">Janolaw Shop ID</th>
+				<th scope="row">janolaw Shop ID</th>
 				<td><input type="text" name="janolaw_shop_id" value="<?= get_option('janolaw_shop_id'); ?>" /><br />
 					<small><?= __('Your janolaw Shop ID is issued by janolaw AG by registering at', 'janolaw-agb-hosting'); ?>
-					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('Janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
+					<a href="https://www.janolaw.de/myjanolaw/agb-service/" target="_blank"><?= __('janolaw	AGB Hosting Service', 'janolaw-agb-hosting'); ?></a></small></td>
 			</tr>
 		</table>
 
@@ -272,7 +275,6 @@ function janolaw_plugin_options() {
 					<small><?= __('Check to clear cache & refresh from server by next pagecall', 'janolaw-agb-hosting'); ?></small>
 				</td>
 			</tr>
-
 
 			<?php if ($versionnumber == 4): ?>
 			<tr valign="top">
@@ -331,12 +333,6 @@ function janolaw_plugin_options() {
 			</tr>
 			<?php endif; ?>
 		</table>
-
-
-
-
-
-
 
 		<br />
 		<h3 class="title"><?= __('WooCommerce integration', 'janolaw-agb-hosting'); ?></h3>
@@ -428,7 +424,7 @@ function janolaw_plugin_options() {
 				<th scope="row"><h3><?= __('Howto', 'janolaw-agb-hosting'); ?></h3></th>
 				<td><?= __('Check the Checkbox of the desired document to create the page automatically.', 'janolaw-agb-hosting'); ?>
 				<br /><br />
-					<?= __('Insert one of the following Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
+					<?= __('Insert one of the following Tags into any page to display the refering janolaw document:', 'janolaw-agb-hosting'); ?>
 						<blockquote>
 						[janolaw_agb]<br />
 						[janolaw_impressum]<br />
@@ -438,7 +434,7 @@ function janolaw_plugin_options() {
 						[janolaw_datenschutzerklaerung]
 						</blockquote>
 						<?php if ($versionnumber == 4): ?>
-					<?= __('Alternatively insert one of the following <u>hardcoded</u> Tags into any page to display the refering Janolaw document:', 'janolaw-agb-hosting'); ?>
+					<?= __('Alternatively insert one of the following <u>hardcoded</u> Tags into any page to display the refering janolaw document:', 'janolaw-agb-hosting'); ?>
 						<blockquote>
 						[janolaw_agb_XX]<br />
 						[janolaw_impressum_XX]<br />
@@ -589,7 +585,7 @@ function _get_document($type, $language = null) {
 	if ($file = file_get_contents($cache_file)) {
 		return $cache_clear_msg . $pdftop . $file . $pdfbottom;
 	} else {
-		return "<div style='border: #DF0101 1px solid; border-left: #DF0101 6px solid; padding-left: 10px; '>".__("Ein Fehler ist aufgetreten! Bitte &uuml;berpr&uuml;fen Sie ihre Janolaw UserID und ShopID in Ihrer Konfiguration und ob der Cache Pfad beschreibbar ist!","janolaw-agb-hosting")." # $language # $type # $base_path # $cache_file </div>";
+		return "<div style='border: #DF0101 1px solid; border-left: #DF0101 6px solid; padding-left: 10px; '>".__("Ein Fehler ist aufgetreten! Bitte &uuml;berpr&uuml;fen Sie ihre janolaw UserID und ShopID in Ihrer Konfiguration und ob der Cache Pfad beschreibbar ist!","janolaw-agb-hosting")." # $language # $type # $base_path # $cache_file </div>";
 	}
 }
 
