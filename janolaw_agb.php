@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: janolaw AGB Hosting
-Plugin URI: http://www.janolaw.de/internetrecht/agb/agb-hosting-service/
+Plugin URI: https://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.3.8
+Version: 4.3.9
 Author: Jan Giebels, Conspir3D GmbH
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -73,7 +73,7 @@ function register_janolaw_settings() {
 }
 
 function janolaw_server_check() {
-	$base_url = 'http://www.janolaw.de/agb-service/shops/';
+	$base_url = 'https://www.janolaw.de/agb-service/shops/';
 	$user_id = get_option('janolaw_user_id');
 	$shop_id = get_option('janolaw_shop_id');
 
@@ -491,7 +491,7 @@ function _get_document($type, $language = null) {
 	$cache_path = get_option('janolaw_cache_path');
 	$cache_clear = get_option('janolaw_cache_clear');
 	$cache_time = 43200;
-	$base_url = 'http://www.janolaw.de/agb-service/shops/';
+	$base_url = 'https://www.janolaw.de/agb-service/shops/';
 	$cache_clear_msg = '';
 
 	// use language for hardcoded tags
