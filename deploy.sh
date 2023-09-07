@@ -21,6 +21,7 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
 SVNUSER="Code-WorX" # your svn username
+SVNPASSWD="vjU&fv9Y\$iE!" #svn password
 
 
 # Let's begin...
@@ -56,7 +57,7 @@ git push origin master --tags
 
 echo 
 echo "Creating local copy of SVN repo ..."
-svn co $SVNURL $SVNPATH
+svn co --username=$SVNUSER --password=$SVNPASSWD $SVNURL $SVNPATH
 
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
@@ -66,6 +67,7 @@ svn propset svn:ignore "deploy.sh
 wikidoc.py
 wikidoc.html
 README.md
+WP-janolaw.code-workspace
 .git
 .gitignore" "$SVNPATH/trunk/"
 
