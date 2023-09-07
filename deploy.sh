@@ -18,11 +18,10 @@ MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in th
 GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 
 # svn config
-SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
-SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
+SVNPATH="/var/www/html/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
+SVNURL="https://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
 SVNUSER="Code-WorX" # your svn username
 SVNPASSWD="vjU&fv9Y\$iE!" #svn password
-
 
 # Let's begin...
 echo ".........................................."
@@ -42,6 +41,8 @@ echo "readme version: $NEWVERSION1"
 
 #rm wikidoc.html
 #mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf $CURRENTDIR
+git config --global user.email "jan.giebels@conspir3d.com"
+git config --global user.name "Jan Giebels"
 
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"
@@ -82,17 +83,17 @@ cd $SVNPATH/trunk/
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 echo "committing to trunk"
-svn commit --username=$SVNUSER -m "$COMMITMSG"
+svn commit --username=$SVNUSER --password=$SVNPASSWD -m "$COMMITMSG"
 
 echo "Updating WP plugin repo assets & committing"
 cd $SVNPATH/assets/
-svn commit --username=$SVNUSER -m "Updating wp-repo-assets"
+svn commit --username=$SVNUSER --password=$SVNPASSWD -m "Updating wp-repo-assets"
 
 echo "Creating new SVN tag & committing it"
 cd $SVNPATH
 svn copy trunk/ tags/$NEWVERSION1/
 cd $SVNPATH/tags/$NEWVERSION1
-svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
+svn commit --username=$SVNUSER --password=$SVNPASSWD -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
