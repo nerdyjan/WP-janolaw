@@ -43,6 +43,7 @@ echo "readme version: $NEWVERSION1"
 #mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf $CURRENTDIR
 git config --global user.email "jan.giebels@conspir3d.com"
 git config --global user.name "Jan Giebels"
+git config --global credential.helper store
 
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"

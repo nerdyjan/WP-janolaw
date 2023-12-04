@@ -3,16 +3,16 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: https://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.4.4
-Author: Jan Giebels, Conspir3D GmbH
+Version: 4.4.5
+Author: Jan Giebels
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
-Author URI: https://www.conspir3d.com
+Author URI: https://www.giebels.biz
 License: GPL2
 */
 ?>
 <?php
-/*  Copyright 2023  Conspir3D GmbH, Jan Giebels  (email : info@conspir3d.com)
+/*  Copyright 2023  Jan Giebels  (email : info@giebels.biz)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -29,7 +29,7 @@ License: GPL2
 */
 ?>
 <?php
-$janolaw_version = '4.4.4';
+$janolaw_version = '4.4.5';
 load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
@@ -85,23 +85,23 @@ function janolaw_server_check() {
 	} else {
 		# check for version 1
 		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/legaldetails_include.html');
-		if (isset($headers[0]) && ($headers[0] == 'HTTP/1.1 404 Not Found')) {
+		if (isset($headers[0]) && ($headers[0] != 'HTTP/1.1 404 Not Found')) {
 			update_option( "janolaw_version", 1 );
 		}
 		# check for version 2
 		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails_include.html');
-		if (isset($headers[0]) && ($headers[0] == 'HTTP/1.1 404 Not Found')) {
+		if (isset($headers[0]) && ($headers[0] != 'HTTP/1.1 404 Not Found')) {
 			update_option( "janolaw_version", 2 );
 		}
 		# check for version 3
 		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/de/legaldetails.pdf');
-		if (isset($headers[0]) && ($headers[0] == 'HTTP/1.1 404 Not Found')) {
+		if (isset($headers[0]) && ($headers[0] != 'HTTP/1.1 404 Not Found')) {
 			update_option( "janolaw_version", 3 );
 		}
 
 		# check for version 3 + multilingual
 		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/fr/legaldetails.pdf');
-		if (isset($headers[0]) && ($headers[0] == 'HTTP/1.1 404 Not Found')) {
+		if (isset($headers[0]) && ($headers[0] != 'HTTP/1.1 404 Not Found')) {
 			update_option( "janolaw_version", 4 );
 		}
 
@@ -112,7 +112,6 @@ function janolaw_server_check() {
 			$message .= "<div id='setting-error-settings_updated' class='updated settings-error'>".__("Your service is capable of upgrading to multilanguage documents.<br /><br/> Please contact janolaw support for further questions and assistance.","janolaw-agb-hosting")."</div>";
 		}
 	}
-
  	return $message;
 }
 
