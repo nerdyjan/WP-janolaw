@@ -18,7 +18,7 @@ MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in th
 GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 
 # svn config
-SVNPATH="/var/www/html/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
+SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNURL="https://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
 SVNUSER="Code-WorX" # your svn username
 SVNPASSWD="vjU&fv9Y\$iE!" #svn password
