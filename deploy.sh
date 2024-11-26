@@ -21,7 +21,7 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNURL="https://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
 SVNUSER="Code-WorX" # your svn username
-SVNPASSWD="vjU&fv9Y\$iE!" #svn password
+SVNPASSWD="w#U1o*CwEe4a0eDX" #svn password
 
 # Let's begin...
 echo ".........................................."
