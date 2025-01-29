@@ -3,16 +3,16 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: https://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.4.9
+Version: 4.4.10
 Author: Jan Giebels
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
-Author URI: https://www.giebels.biz
+Author URI: https://giebels.biz
 License: GPL2
 */
 ?>
 <?php
-/*  Copyright 2023  Jan Giebels  (email : info@giebels.biz)
+/*  Copyright 2025  Jan Giebels  (email : info@giebels.biz)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -29,7 +29,7 @@ License: GPL2
 */
 ?>
 <?php
-$janolaw_version = '4.4.7';
+$janolaw_version = '4.4.10';
 load_plugin_textdomain('janolaw-agb-hosting', false, "/wp-content/plugins/janolaw-agb-hosting/lang/");
 add_action('plugins_loaded', 'wan_load_textdomain');
 
