@@ -2,7 +2,7 @@
 Tags: agb, Impressum, Datenschutzerklärung, Widerrufsbelehrung, Rechtstexte, disclaimer, imprint, legal documents, privacy, revocation, datasecurity, model withdrawal, general terms and conditions, shop, blog, website, janolaw
 Requires at least: 3.0
 Tested up to: 6.7.1
-Stable tag: 4.4.10
+Stable tag: 4.4.11
 
 This plugin gets legal documents provided by janolaw AG (commercial service) like General terms, Imprint etc. for Wordpress sites and WooCommerce shops.
 
@@ -99,9 +99,12 @@ Use this CSS !
 
 == Changelog ==
 
+= 4.4.11 =
+* changed service version detection for multilingual documents
+
 = 4.4.10 =
 * minor changes
-* repository moved to https://github.com/nerdyjan
+* repository now public
 
 = 4.4.9 =
 * compatibility with Wordpress 6.7.1

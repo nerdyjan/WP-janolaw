@@ -41,7 +41,7 @@ echo "readme version: $NEWVERSION1"
 
 #rm wikidoc.html
 #mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf $CURRENTDIR
-git config --global user.email "jan@giebels.biz"
+git config --global user.email "nerdyjan@giebels.biz"
 git config --global user.name "Jan Giebels"
 git config --global credential.helper store
 
