@@ -3,7 +3,7 @@
 Plugin Name: janolaw AGB Hosting
 Plugin URI: https://www.janolaw.de/internetrecht/agb/agb-hosting-service/
 Description: This Plugin get hosted legal documents provided by janolaw AG for Web-Shops and Pages.
-Version: 4.4.11
+Version: 4.4.12
 Author: Jan Giebels
 Text Domain: janolaw-agb-hosting
 Domain Path: /languages
@@ -81,7 +81,7 @@ function janolaw_server_check() {
 	$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/');
 
 	if (isset($headers[0]) && ($headers[0] == 'HTTP/1.1 404 Not Found')) {
-		$message = "<div id='setting-error-settings_updated' class='error settings-error'>".__("janolaw server <u>not</u> avaiable","janolaw-agb-hosting")."</div>";
+		$message = "<div id='setting-error-settings_updated' class='error settings-error'>".__("janolaw server <u>not</u> available or wrong User-ID or Shop-ID","janolaw-agb-hosting")."</div>";
 	} else {
 		# check for version 1
 		$headers = @get_headers($base_url.'/'.$user_id.'/'.$shop_id.'/legaldetails_include.html');
@@ -601,7 +601,7 @@ function janolaw_url_get_contents ($Url) {
     curl_setopt($ch, CURLOPT_URL, $Url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($ch);
-    curl_close($ch);
+	curl_close($ch);
 
     return $output;
 }

@@ -35,12 +35,6 @@ echo
 NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
 echo "readme version: $NEWVERSION1"
 
-# generate documentation from repo wiki
-#cd /Users/jg/DEV/
-#$GITPATH/wikidoc.py /usr/bin/wkhtmltopdf ./WP-janolaw.wiki
-
-#rm wikidoc.html
-#mv /Users/jg/DEV/WP-janolaw.wiki/janolaw_AGB-Hosting-Dokumentation.pdf $CURRENTDIR
 git config --global user.email "nerdyjan@giebels.biz"
 git config --global user.name "Jan Giebels"
 git config --global credential.helper store
@@ -53,13 +47,14 @@ git commit -am "$COMMITMSG"
 echo "Tagging new version in git"
 git tag -a "v$NEWVERSION1" -m "$COMMITMSG"
 
-echo "Pushing latest commit to origin, with tags"
-git push origin master
-git push origin master --tags
+echo "Pushing latest commit to github, with tags"
+git push github master
+git push github master --tags
 
 echo 
 echo "Creating local copy of SVN repo ..."
 svn co --username=$SVNUSER --password=$SVNPASSWD $SVNURL $SVNPATH
+# svn co --username=Code-WorX --password=w\#U1o\*CwEe4a0eDX https://plugins.svn.wordpress.org/janolaw-agb-hosting /tmp/janolaw-agb-hosting
 
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
@@ -85,6 +80,7 @@ cd $SVNPATH/trunk/
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 echo "committing to trunk"
 svn commit --username=$SVNUSER --password=$SVNPASSWD -m "$COMMITMSG"
+# svn commit --username=$SVNUSER --password=$SVNPASSWD -m "v4.4.11 release"
 
 echo "Updating WP plugin repo assets & committing"
 cd $SVNPATH/assets/
