@@ -58,6 +58,7 @@ svn co --username=$SVNUSER --password=$SVNPASSWD $SVNURL $SVNPATH
 
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
+# git checkout-index -a -f --prefix=/tmp/janolaw-agb-hosting/trunk/
 
 echo "Ignoring github specific & deployment script"
 svn propset svn:ignore "deploy.sh
@@ -67,6 +68,15 @@ README.md
 WP-janolaw.code-workspace
 .git
 .gitignore" "$SVNPATH/trunk/"
+
+# svn propset svn:ignore "deploy.sh
+# wikidoc.py
+# wikidoc.html
+# README.md
+# WP-janolaw.code-workspace
+# .git
+# .gitignore" "/tmp/janolaw-agb-hosting/trunk/"
+
 
 echo "Moving assets-wp-repo"
 mkdir $SVNPATH/assets/
@@ -93,7 +103,7 @@ cd $SVNPATH/tags/$NEWVERSION1
 svn commit --username=$SVNUSER --password=$SVNPASSWD -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
-rm -fr $SVNPATH/
+# rm -fr $SVNPATH/
 
 echo "*** FIN ***"
 
